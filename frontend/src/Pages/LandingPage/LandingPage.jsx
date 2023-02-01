@@ -32,9 +32,7 @@ export default function LandingPage() {
         <Navbar />
         <div className="columns is-half-desktop" style={{ padding: "30px" }}>
           <div className="column">
-            <div className="title is-1">
-              EVENT <span className="colored-word">CHECK</span>
-            </div>
+          <div className="title is-1">EVENT <span className="colored-word">CHECK</span></div>
             <div className="subtitle is-5 mt-3">
               Our app helps businesses, schools and organizations manage their
               guest lists by storing images and voice recordings of authorized

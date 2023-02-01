@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
+import SignupModal from "./SignupModal";
+import SigninModal from "./SigninModal";
 
 export default function Navbar() {
+  const [signupModalOpen, setSignupModalOpen] = useState(false);
+  const [signinModalOpen, setSigninModalOpen] = useState(false);
+
   const toggleNavbar = () => {
     const navbar = document.querySelector(".navbar-burger");
     const target = document.getElementById(navbar.dataset.target);
@@ -39,13 +44,23 @@ export default function Navbar() {
             HOME
           </a>
 
-          <a className="navbar-item" href="#">
+          <a className="navbar-item" onClick={() => setSignupModalOpen(true)}>
             SIGN UP
           </a>
+          <SignupModal
+            signupModalOpen={signupModalOpen}
+            setSignupModalOpen={setSignupModalOpen}
+            setSigninModalOpen={setSigninModalOpen}
+          />
 
-          <a className="navbar-item" href="#">
+          <a className="navbar-item" onClick={() => setSigninModalOpen(true)}>
             SIGN IN
           </a>
+          <SigninModal
+            signinModalOpen={signinModalOpen}
+            setSigninModalOpen={setSigninModalOpen}
+            setSignupModalOpen={setSignupModalOpen}
+          />
         </div>
       </div>
     </nav>
