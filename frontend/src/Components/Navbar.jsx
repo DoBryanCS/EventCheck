@@ -40,7 +40,7 @@ export default function Navbar() {
 
       <div id="navbarBasicExample" className="navbar-menu">
         <div className="navbar-end mr-5 mt-3">
-          <a className="navbar-item" href="#">
+          <a className="navbar-item" href="/">
             HOME
           </a>
 

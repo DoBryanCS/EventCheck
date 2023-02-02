@@ -1,9 +1,32 @@
 import React, { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase-config";
+import { useNavigate } from "react-router-dom";
 
 export default function SigninModal(props) {
+  const navigate = useNavigate();
   const { signinModalOpen, setSigninModalOpen, setSignupModalOpen } = props;
-  const [emailFocus, setEmailFocus] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
+  }
+
+  function handlePasswordChange(e) {
+    setPassword(e.target.value);
+  }
+
+  const login = async () => {
+    try {
+      const user = await signInWithEmailAndPassword(auth, email, password);
+      console.log(user);
+      navigate("/home");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     signinModalOpen && (
@@ -17,19 +40,12 @@ export default function SigninModal(props) {
             >
               Sign In
             </p>
-            <button
-              className="delete"
-              aria-label="close"
-              onClick={() => setSigninModalOpen(false)}
-            ></button>
           </header>
           <section className="modal-card-body has-text-centered">
             <div
               className="field"
               style={{
-                boxShadow: emailFocus
-                  ? "1px 1px 10px #69EBFC"
-                  : "1px 1px 10px #888888",
+                boxShadow: "1px 1px 10px #69EBFC",
               }}
             >
               <div className="control has-icons-left">
@@ -37,8 +53,7 @@ export default function SigninModal(props) {
                   className="input"
                   type="email"
                   placeholder="E-mail"
-                  onFocus={() => setEmailFocus(true)}
-                  onBlur={() => setEmailFocus(false)}
+                  onChange={(e) => handleEmailChange(e)}
                 />
                 <span className="icon is-small is-left">
                   <i className="fas fa-envelope"></i>
@@ -48,9 +63,7 @@ export default function SigninModal(props) {
             <div
               className="field"
               style={{
-                boxShadow: passwordFocus
-                  ? "1px 1px 10px #69EBFC"
-                  : "1px 1px 10px #888888",
+                boxShadow: "1px 1px 10px #69EBFC",
               }}
             >
               <div className="control has-icons-left">
@@ -58,8 +71,7 @@ export default function SigninModal(props) {
                   className="input"
                   type="password"
                   placeholder="Password"
-                  onFocus={() => setPasswordFocus(true)}
-                  onBlur={() => setPasswordFocus(false)}
+                  onChange={(e) => handlePasswordChange(e)}
                 />
                 <span className="icon is-small is-left">
                   <i className="fa fa-lock"></i>
@@ -90,6 +102,7 @@ export default function SigninModal(props) {
             <button
               style={{ backgroundColor: "#69EBFC" }}
               className="button has-text-white"
+              onClick={login}
             >
               Sign In
             </button>

@@ -1,11 +1,114 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../firebase-config";
+import { useNavigate } from "react-router-dom";
+import { ref, push } from "firebase/database";
 
 export default function SignupModal(props) {
+  const navigate = useNavigate();
   const { signupModalOpen, setSignupModalOpen, setSigninModalOpen } = props;
-  const [nameFocus, setNameFocus] = useState(false);
-  const [emailFocus, setEmailFocus] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
-  const [confirmPasswordFocus, setConfirmPasswordFocus] = useState(false);
+
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  const [emailFocus, setEmailFocus] = useState(true);
+  const [passwordFocus, setPasswordFocus] = useState(true);
+  const [confirmPasswordFocus, setConfirmPasswordFocus] = useState(true);
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [passwordError, setPasswordError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  const register = async () => {
+    try {
+      const user = await createUserWithEmailAndPassword(auth, email, password);
+      const refUsers = ref(db, `companies/${email.replace(".", "")}/`);
+      let newUserRef = push(refUsers, { companyname: name });
+      console.log(user);
+      navigate("/home");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      name !== "" &&
+      password !== "" &&
+      email !== "" &&
+      confirmPassword !== "" &&
+      emailFocus &&
+      passwordFocus &&
+      confirmPasswordFocus
+    ) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  }, [
+    name,
+    password,
+    email,
+    confirmPassword,
+    emailFocus,
+    passwordFocus,
+    confirmPasswordFocus,
+  ]);
+
+  function handleNameChange(e) {
+    setName(e.target.value);
+  }
+
+  const validateConfirmPassword = (confirmPassword) => {
+    if (password !== confirmPassword) {
+      setConfirmPasswordFocus(false);
+      setConfirmPasswordError("The passwords are not identical");
+    } else {
+      setConfirmPassword(confirmPassword);
+      setConfirmPasswordFocus(true);
+      setConfirmPasswordError("");
+    }
+  };
+
+  const validateEmail = (email) => {
+    if (!/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(email)) {
+      setEmailFocus(false);
+      setEmailError("Invalid email address");
+    } else {
+      setEmail(email);
+      setEmailFocus(true);
+      setEmailError("");
+    }
+  };
+
+  const validatePassword = (password) => {
+    if (!/^.{8,}$/.test(password)) {
+      setPasswordFocus(false);
+      setPasswordError("Password must be at least 8 characters long");
+    } else if (
+      !/[!@#\$%\^&\*\(\)\_\-\+\=\{\}\[\]\\\|:\";'<>,\.\?\/]/.test(password)
+    ) {
+      setPasswordFocus(false);
+      setPasswordError("The password must have at least one special character");
+    } else if (!/[A-Z]/.test(password)) {
+      setPasswordFocus(false);
+      setPasswordError("The password must have at least one uppercase letter");
+    } else if (!/[a-z]/.test(password)) {
+      setPasswordFocus(false);
+      setPasswordError("The password must have at least one lowercase letter");
+    } else if (!/[0-9]/.test(password)) {
+      setPasswordFocus(false);
+      setPasswordError("The password must have at least one digit");
+    } else {
+      setPassword(password);
+      setPasswordFocus(true);
+      setPasswordError("");
+    }
+  };
 
   if (signupModalOpen) {
     return (
@@ -19,19 +122,12 @@ export default function SignupModal(props) {
             >
               Sign Up
             </p>
-            <button
-              className="delete"
-              aria-label="close"
-              onClick={() => setSignupModalOpen(false)}
-            ></button>
           </header>
           <section className="modal-card-body has-text-centered">
             <div
               className="field"
               style={{
-                boxShadow: nameFocus
-                  ? "1px 1px 10px #69EBFC"
-                  : "1px 1px 10px #888888",
+                boxShadow: "1px 1px 10px #69EBFC",
               }}
             >
               <div className="control has-icons-left">
@@ -39,8 +135,7 @@ export default function SignupModal(props) {
                   className="input"
                   type="text"
                   placeholder="Organization's, business's, school's name"
-                  onFocus={() => setNameFocus(true)}
-                  onBlur={() => setNameFocus(false)}
+                  onChange={(e) => handleNameChange(e)}
                 />
                 <span className="icon is-small is-left">
                   <i className="fa-solid fa-user"></i>
@@ -52,7 +147,7 @@ export default function SignupModal(props) {
               style={{
                 boxShadow: emailFocus
                   ? "1px 1px 10px #69EBFC"
-                  : "1px 1px 10px #888888",
+                  : "1px 1px 10px #cc0000",
               }}
             >
               <div className="control has-icons-left">
@@ -60,20 +155,20 @@ export default function SignupModal(props) {
                   className="input"
                   type="email"
                   placeholder="E-mail"
-                  onFocus={() => setEmailFocus(true)}
-                  onBlur={() => setEmailFocus(false)}
+                  onChange={(event) => validateEmail(event.target.value)}
                 />
                 <span className="icon is-small is-left">
                   <i className="fas fa-envelope"></i>
                 </span>
               </div>
             </div>
+            {emailError && <div className="error mb-2">{emailError}</div>}
             <div
               className="field"
               style={{
                 boxShadow: passwordFocus
                   ? "1px 1px 10px #69EBFC"
-                  : "1px 1px 10px #888888",
+                  : "1px 1px 10px #cc0000",
               }}
             >
               <div className="control has-icons-left">
@@ -81,20 +176,20 @@ export default function SignupModal(props) {
                   className="input"
                   type="password"
                   placeholder="Password"
-                  onFocus={() => setPasswordFocus(true)}
-                  onBlur={() => setPasswordFocus(false)}
+                  onChange={(event) => validatePassword(event.target.value)}
                 />
                 <span className="icon is-small is-left">
                   <i className="fa fa-lock"></i>
                 </span>
               </div>
             </div>
+            {passwordError && <div className="error mb-2">{passwordError}</div>}
             <div
               className="field"
               style={{
                 boxShadow: confirmPasswordFocus
                   ? "1px 1px 10px #69EBFC"
-                  : "1px 1px 10px #888888",
+                  : "1px 1px 10px #cc0000",
               }}
             >
               <div className="control has-icons-left">
@@ -102,14 +197,18 @@ export default function SignupModal(props) {
                   className="input"
                   type="password"
                   placeholder="Confirm password"
-                  onFocus={() => setConfirmPasswordFocus(true)}
-                  onBlur={() => setConfirmPasswordFocus(false)}
+                  onChange={(event) =>
+                    validateConfirmPassword(event.target.value)
+                  }
                 />
                 <span className="icon is-small is-left">
                   <i className="fa fa-lock"></i>
                 </span>
               </div>
             </div>
+            {confirmPasswordError && (
+              <div className="error mb-2">{confirmPasswordError}</div>
+            )}
             <div className="field">
               <div className="control">
                 Already have an account?{" "}
@@ -127,13 +226,23 @@ export default function SignupModal(props) {
           <footer className="modal-card-foot buttons is-centered">
             <button
               className="button has-text-weight-bold"
-              onClick={() => setSignupModalOpen(false)}
+              onClick={() => {
+                setSignupModalOpen(false);
+                setEmailFocus(true);
+                setPasswordFocus(true);
+                setConfirmPasswordFocus(true);
+                setEmailError("");
+                setPasswordError("");
+                setConfirmPasswordError("");
+              }}
             >
               Cancel
             </button>
             <button
               style={{ backgroundColor: "#69EBFC" }}
               className="button has-text-white"
+              disabled={!isFormValid}
+              onClick={register}
             >
               Sign Up
             </button>
