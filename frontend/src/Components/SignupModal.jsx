@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
-import { ref, push } from "firebase/database";
+import { ref, push, set } from "firebase/database";
 
 export default function SignupModal(props) {
   const navigate = useNavigate();
@@ -26,8 +26,10 @@ export default function SignupModal(props) {
   const register = async () => {
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password);
-      const refUsers = ref(db, `companies/${email.replace(".", "")}/`);
-      let newUserRef = push(refUsers, { companyname: name });
+      set(ref(db, "companies/" + email.replace(".", "")), {
+        company_name: name,
+      });
+      localStorage.setItem("email", email);
       console.log(user);
       navigate("/home");
     } catch (error) {

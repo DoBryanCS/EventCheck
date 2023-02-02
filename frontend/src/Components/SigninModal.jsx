@@ -22,6 +22,7 @@ export default function SigninModal(props) {
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
       console.log(user);
+      localStorage.setItem("email", email);
       navigate("/home");
     } catch (error) {
       console.log(error.message);
