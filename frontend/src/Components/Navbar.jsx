@@ -66,12 +66,18 @@ export default function Navbar() {
               <a className="navbar-item" href="/home">
                 HOME
               </a>
+              <a className="navbar-item" href="/services">
+                SERVICES
+              </a>
               <a className="navbar-item" onClick={logout}>
                 LOGOUT
               </a>
             </>
           ) : (
             <>
+              <a className="navbar-item" href="/services">
+                SERVICES
+              </a>
               <a
                 className="navbar-item"
                 onClick={() => setSignupModalOpen(true)}
