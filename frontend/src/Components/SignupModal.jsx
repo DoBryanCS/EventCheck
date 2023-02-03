@@ -91,9 +91,7 @@ export default function SignupModal(props) {
     if (!/^.{8,}$/.test(password)) {
       setPasswordFocus(false);
       setPasswordError("Password must be at least 8 characters long");
-    } else if (
-      !/[!@#\$%\^&\*\(\)\_\-\+\=\{\}\[\]\\\|:\";'<>,\.\?\/]/.test(password)
-    ) {
+    } else if (!/[!@#$%^&*()_\-+={}[\]\\|:";'<>,.?/]/.test(password)) {
       setPasswordFocus(false);
       setPasswordError("The password must have at least one special character");
     } else if (!/[A-Z]/.test(password)) {

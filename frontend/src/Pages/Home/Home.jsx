@@ -17,6 +17,7 @@ function Home() {
     auth.onAuthStateChanged((user) => {
       if (user) {
         setLoggedIn(true);
+        console.log(loggedIn);
       } else {
         setLoggedIn(false);
       }
@@ -167,7 +168,7 @@ function Home() {
           </div>
         ) : (
           <div className="column is-fullheight has-text-centered">
-            <div className="title is-1">You're not connected</div>
+            <div className="title is-1">You`&apos;re not connected</div>
           </div>
         )}
       </div>

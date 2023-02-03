@@ -62,7 +62,7 @@ export default function Services() {
                     Our application offers you the possibility to directly add
                     all the people you want in a database. Whether these people
                     participate in an event or not, they will all be stored in
-                    our database. When it's time to create or modify an event.
+                    our database. When it`&apos;s time to create or modify an event.
                     You will only have to tick the people who will be authorized
                   </p>
                 </div>
@@ -79,7 +79,7 @@ export default function Services() {
                   <p>
                     Our app also offers features for managing the event itself
                     by creating, modifying or deleting it. You can keep track of
-                    important details and whether you're organizing a small
+                    important details and whether you`&apos;re organizing a small
                     gathering or a large conference, our app makes event
                     management a breeze.
                   </p>

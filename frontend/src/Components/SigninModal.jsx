@@ -81,7 +81,7 @@ export default function SigninModal(props) {
             </div>
             <div className="field">
               <div className="control">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <a
                   onClick={() => {
                     setSigninModalOpen(false);

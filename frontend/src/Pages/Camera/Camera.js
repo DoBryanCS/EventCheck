@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Camera.css";
 import Navbar from "../../Components/Navbar";
 
 const Camera = () => {
-  const [videoUrl, setVideoUrl] = useState("http://127.0.0.1:5000/video");
+  const videoUrl = "http://127.0.0.1:5000/video";
 
   return (
     <div
@@ -43,7 +43,7 @@ const Camera = () => {
           </div>
         ) : (
           <div className="column is-fullheight has-text-centered">
-            <div className="title is-1">You're not connected</div>
+            <div className="title is-1">You`&apos;re not connected</div>
           </div>
         )}
       </div>
