@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Camera.css";
 import Navbar from "../../Components/Navbar";
 
@@ -42,8 +42,8 @@ const Camera = () => {
             </div>
           </div>
         ) : (
-          <div className="center-button-vh">
-            <p>You're not connected</p>
+          <div className="column is-fullheight has-text-centered">
+            <div className="title is-1">You're not connected</div>
           </div>
         )}
       </div>

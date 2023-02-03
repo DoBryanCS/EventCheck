@@ -2,17 +2,31 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Home.css";
 import { auth, db } from "../../firebase-config";
-import { signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-import { ref, push, onValue } from "firebase/database";
+import { ref, onValue } from "firebase/database";
 import Navbar from "../../Components/Navbar";
 import imageFace from "../Services/face-recognition.png";
 import event from "../Services/people.png";
 import guest from "../Services/guest-list.png";
 
 function Home() {
-  const navigate = useNavigate();
   const [companyName, setCompanyName] = useState(null);
+
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    const user = auth.currentUser;
+    console.log(user);
+  });
 
   useEffect(() => {
     const storedCompanyName = localStorage.getItem("companyName");
@@ -152,8 +166,8 @@ function Home() {
             </div>
           </div>
         ) : (
-          <div className="center-button-vh">
-            <p>You're not connected</p>
+          <div className="column is-fullheight has-text-centered">
+            <div className="title is-1">You're not connected</div>
           </div>
         )}
       </div>

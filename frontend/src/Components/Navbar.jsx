@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SignupModal from "./SignupModal";
 import SigninModal from "./SigninModal";
-import { signOut, onAuthStateChanged } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
 
@@ -9,7 +9,6 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [signupModalOpen, setSignupModalOpen] = useState(false);
   const [signinModalOpen, setSigninModalOpen] = useState(false);
-  const [user, setUser] = useState("");
 
   const toggleNavbar = () => {
     const navbar = document.querySelector(".navbar-burger");
@@ -25,14 +24,12 @@ export default function Navbar() {
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      if (user) {
-        setUser(localStorage.getItem("email"));
-      } else {
-        setUser(localStorage.setItem("email", ""));
+      if (!user) {
+        localStorage.setItem("email", "");
         localStorage.setItem("companyName", "");
       }
     });
-  }, [auth]);
+  }, []);
 
   return (
     <nav

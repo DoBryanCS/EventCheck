@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
-import { ref, push, set } from "firebase/database";
+import { ref, set } from "firebase/database";
 
 export default function SignupModal(props) {
   const navigate = useNavigate();
