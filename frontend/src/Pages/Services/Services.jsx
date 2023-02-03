@@ -43,9 +43,9 @@ export default function Services() {
                   <p>
                     Our app helps organizations verify the identity of attendees
                     in real-time, making it easy to determine who is authorized
-                    to participate. By storing images and voice recordings of
-                    authorized attendees in a database, we can ensure that only
-                    authorized individuals are allowed to enter the event.
+                    to participate. By storing images of authorized attendees in
+                    a database, we can ensure that only authorized individuals
+                    are allowed to enter the event.
                   </p>
                 </div>
               </div>
@@ -59,12 +59,11 @@ export default function Services() {
                 </div>
                 <div className="column is-three-quarters">
                   <p>
-                    Our app offers features for managing the guest list, making
-                    it easy for organizations to keep track of who has been
-                    invited and who has confirmed their attendance. You can add
-                    and delete guests on the list as needed, ensuring that you
-                    always have an up-to-date record of who will be attending
-                    your event.
+                    Our application offers you the possibility to directly add
+                    all the people you want in a database. Whether these people
+                    participate in an event or not, they will all be stored in
+                    our database. When it's time to create or modify an event.
+                    You will only have to tick the people who will be authorized
                   </p>
                 </div>
               </div>
@@ -78,9 +77,9 @@ export default function Services() {
                 </div>
                 <div className="column is-three-quarters">
                   <p>
-                    In addition to managing guest lists, our app also offers
-                    features for managing the event itself. You can keep track
-                    of important details and whether you're organizing a small
+                    Our app also offers features for managing the event itself
+                    by creating, modifying or deleting it. You can keep track of
+                    important details and whether you're organizing a small
                     gathering or a large conference, our app makes event
                     management a breeze.
                   </p>
