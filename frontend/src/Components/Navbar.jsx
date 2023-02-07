@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SignupModal from "./SignupModal";
 import SigninModal from "./SigninModal";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../Context/AuthContext";
 
-export default function Navbar() {
+export default function Navbar(props) {
+  const { currentUser } = useContext(AuthContext);
+
+  const { dispatch } = useContext(AuthContext);
+
   const navigate = useNavigate();
+
   const [signupModalOpen, setSignupModalOpen] = useState(false);
-  const [signinModalOpen, setSigninModalOpen] = useState(false);
 
   const toggleNavbar = () => {
     const navbar = document.querySelector(".navbar-burger");
@@ -17,19 +21,11 @@ export default function Navbar() {
     target.classList.toggle("is-active");
   };
 
-  const logout = async () => {
-    await signOut(auth);
+  const logout = () => {
+    dispatch({ type: "LOGOUT" });
     navigate("/");
+    props.setSigninModalOpen(false);
   };
-
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (!user) {
-        localStorage.setItem("email", "");
-        localStorage.setItem("companyName", "");
-      }
-    });
-  }, []);
 
   return (
     <nav
@@ -58,7 +54,7 @@ export default function Navbar() {
 
       <div id="navbarBasicExample" className="navbar-menu">
         <div className="navbar-end mr-5 mt-3">
-          {localStorage.getItem("email") ? (
+          {currentUser ? (
             <>
               <a className="navbar-item" href="/home">
                 HOME
@@ -84,18 +80,18 @@ export default function Navbar() {
               <SignupModal
                 signupModalOpen={signupModalOpen}
                 setSignupModalOpen={setSignupModalOpen}
-                setSigninModalOpen={setSigninModalOpen}
+                setSigninModalOpen={props.setSigninModalOpen}
               />
 
               <a
                 className="navbar-item"
-                onClick={() => setSigninModalOpen(true)}
+                onClick={() => props.setSigninModalOpen(true)}
               >
                 SIGN IN
               </a>
               <SigninModal
-                signinModalOpen={signinModalOpen}
-                setSigninModalOpen={setSigninModalOpen}
+                signinModalOpen={props.signinModalOpen}
+                setSigninModalOpen={props.setSigninModalOpen}
                 setSignupModalOpen={setSignupModalOpen}
               />
             </>

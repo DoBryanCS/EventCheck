@@ -2,10 +2,17 @@ import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../Context/AuthContext";
 
 export default function SigninModal(props) {
   const navigate = useNavigate();
+
+  const { dispatch } = useContext(AuthContext);
+
   const { signinModalOpen, setSigninModalOpen, setSignupModalOpen } = props;
+
+  const [error, setError] = useState(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,15 +25,19 @@ export default function SigninModal(props) {
     setPassword(e.target.value);
   }
 
-  const login = async () => {
-    try {
-      const user = await signInWithEmailAndPassword(auth, email, password);
-      console.log(user);
-      localStorage.setItem("email", email);
-      navigate("/home");
-    } catch (error) {
-      console.log(error.message);
-    }
+  const login = (e) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+        dispatch({ type: "LOGIN", payload: user });
+        navigate("/home");
+        setSigninModalOpen(false);
+      })
+      .catch((error) => {
+        setError(true);
+      });
   };
 
   return (
@@ -79,6 +90,7 @@ export default function SigninModal(props) {
                 </span>
               </div>
             </div>
+            {error && <span>Wrong email or password!</span>}
             <div className="field">
               <div className="control">
                 Don&apos;t have an account?{" "}

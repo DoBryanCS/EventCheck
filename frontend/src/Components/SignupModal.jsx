@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../firebase-config";
+import { auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
-import { ref, set } from "firebase/database";
+import { useContext } from "react";
+import { AuthContext } from "../Context/AuthContext";
+import { setDoc, doc } from "firebase/firestore";
+import { db } from "../firebase-config";
 
 export default function SignupModal(props) {
   const navigate = useNavigate();
+
+  const { dispatch } = useContext(AuthContext);
+
   const { signupModalOpen, setSignupModalOpen, setSigninModalOpen } = props;
 
   const [isFormValid, setIsFormValid] = useState(false);
@@ -23,17 +29,16 @@ export default function SignupModal(props) {
   const [emailError, setEmailError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
-  const register = async () => {
+  const register = async (e) => {
+    e.preventDefault();
     try {
-      const user = await createUserWithEmailAndPassword(auth, email, password);
-      set(ref(db, "companies/" + email.replace(".", "")), {
-        company_name: name,
-      });
-      localStorage.setItem("email", email);
-      console.log(user);
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      dispatch({ type: "LOGIN", payload: res.user });
       navigate("/home");
+      setSignupModalOpen(false);
+      await setDoc(doc(db, "companies", res.user.uid), {});
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   };
 
