@@ -34,8 +34,8 @@ export const userColumns = [
   },
 
   {
-    field: "country",
-    headerName: "Country",
+    field: "age",
+    headerName: "Age",
     width: 100,
   },
 ];

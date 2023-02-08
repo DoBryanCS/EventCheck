@@ -3,46 +3,61 @@ import { userColumns } from "../../datatablesource";
 import AddPersonModal from "../../Components/AddPersonModal";
 import React, { useEffect, useState } from "react";
 import { userInputs } from "../../formSource";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { useContext } from "react";
 import { AuthContext } from "../../Context/AuthContext";
 
 const PeopleDatabase = () => {
   const [data, setData] = useState([]);
+  const [addPersonModalOpen, setAddPersonModalOpen] = useState(false);
   const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
-    const fetchData = async () => {
-      let list = [];
-      try {
-        const querySnapshot = await getDocs(
-          collection(db, "companies", currentUser.uid, "people")
-        );
-        querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
+    const unsub = onSnapshot(
+      collection(db, "companies", currentUser.uid, "people"),
+      (snapShot) => {
+        const list = [];
+        snapShot.docs.forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });
         });
         setData(list);
-      } catch (err) {
-        console.log(err);
+      },
+      (error) => {
+        console.log(error);
       }
+    );
+
+    return () => {
+      unsub();
     };
-    fetchData();
   }, []);
 
-  console.log(data);
-  const [addPersonModalOpen, setAddPersonModalOpen] = useState(false);
+  const handleDelete = async (id) => {
+    try {
+      console.log(id);
+      await deleteDoc(doc(db, "companies", currentUser.uid, "people", id));
+      setData(data.filter((item) => item.id !== id));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const actionColumn = [
     {
       field: "action",
       headerName: "Action",
       width: 200,
-      renderCell: () => {
+      renderCell: (params) => {
         return (
           <div
             className="cellAction"
-            style={{ display: "flex", alignItems: "center", gap: "15px" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "15px",
+              textDecoration: "none",
+            }}
           >
             <div
               className="viewButton"
@@ -65,6 +80,7 @@ const PeopleDatabase = () => {
                 border: "1px dotted rgba(220,20,60,0.6)",
                 cursor: "pointer",
               }}
+              onClick={() => handleDelete(params.row.id)}
             >
               Delete
             </div>

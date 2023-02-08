@@ -12,7 +12,28 @@ export default function AddPersonModal(props) {
   const fileInputRef = useRef(null);
   const { currentUser } = useContext(AuthContext);
 
+  const [emailFocus, setEmailFocus] = useState(true);
+  const [ageFocus, setAgeFocus] = useState(true);
+
+  const [emailError, setEmailError] = useState("");
+  const [ageError, setAgeError] = useState("");
+
+  const [disabled, setDisabled] = useState(true);
+
   const { addPersonModalOpen, setAddPersonModalOpen, inputs } = props;
+
+  useEffect(() => {
+    if (
+      Object.keys(data).length >= 4 &&
+      emailFocus &&
+      ageFocus &&
+      file !== ""
+    ) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [data, emailFocus, ageFocus, file]);
 
   useEffect(() => {
     const uploadFile = () => {
@@ -69,6 +90,12 @@ export default function AddPersonModal(props) {
         ...data,
         timeStamp: serverTimestamp(),
       });
+      setAddPersonModalOpen(false);
+      setEmailFocus(true);
+      setAgeFocus(true);
+      setEmailError("");
+      setAgeError("");
+      setFile("");
     } catch (err) {
       console.log(err);
     }
@@ -77,6 +104,26 @@ export default function AddPersonModal(props) {
   const handleInput = (e) => {
     const id = e.target.id;
     const value = e.target.value;
+
+    if (id === "email") {
+      if (!/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(value)) {
+        setEmailFocus(false);
+        setEmailError("Invalid email address");
+      } else {
+        setEmailFocus(true);
+        setEmailError("");
+      }
+    }
+
+    if (id === "age") {
+      if (value > 0 && value > 200) {
+        setAgeFocus(false);
+        setAgeError("The age must be between 0 and 200 inclusive");
+      } else {
+        setAgeFocus(true);
+        setAgeError("");
+      }
+    }
 
     setData({ ...data, [id]: value });
   };
@@ -90,10 +137,10 @@ export default function AddPersonModal(props) {
         <div className="modal-card">
           <header className="modal-card-head">
             <p
-              className="modal-card-title has-text-centered"
+              className="modal-card-title has-text-centered has-text-weight-bold"
               style={{ marginBottom: "0" }}
             >
-              Add a new person to the database
+              Add a new person
             </p>
           </header>
           <section className="modal-card-body has-text-centered">
@@ -104,6 +151,9 @@ export default function AddPersonModal(props) {
                   borderRadius: "50%",
                   objectFit: "cover",
                   cursor: "pointer",
+                  boxShadow: file
+                    ? "1px 1px 10px #69EBFC"
+                    : "1px 1px 10px #cc0000",
                 }}
                 src={
                   file
@@ -122,34 +172,62 @@ export default function AddPersonModal(props) {
                 onChange={(e) => setFile(e.target.files[0])}
               />
             </div>
+            {!file && (
+              <div className="error mb-2 has-text-weight-bold">
+                Select an image
+              </div>
+            )}
 
             {inputs.map((input) => (
-              <div
-                key={input.id}
-                className="field"
-                style={{
-                  boxShadow: "1px 1px 10px #69EBFC",
-                }}
-              >
-                <input
-                  id={input.id}
-                  className="input"
-                  type={input.type}
-                  placeholder={input.placeholder}
-                  onChange={handleInput}
-                />
+              <div key={input.id} className="field">
+                <div
+                  key={input.id}
+                  className="field"
+                  style={{
+                    boxShadow:
+                      (input.id === "email" && !emailFocus) ||
+                      (input.id === "age" && !ageFocus)
+                        ? "1px 1px 10px #cc0000"
+                        : "1px 1px 10px #69EBFC",
+                  }}
+                >
+                  <input
+                    id={input.id}
+                    className="input"
+                    type={input.type}
+                    placeholder={input.placeholder}
+                    onChange={handleInput}
+                  />
+                </div>
+                {input.id === "email" && emailError && (
+                  <div className="error mb-2 has-text-weight-bold">
+                    {emailError}
+                  </div>
+                )}
+                {input.id === "age" && ageError && (
+                  <div className="error mb-2 has-text-weight-bold">
+                    {ageError}
+                  </div>
+                )}
               </div>
             ))}
           </section>
           <footer className="modal-card-foot buttons is-centered">
             <button
               className="button has-text-weight-bold"
-              onClick={() => setAddPersonModalOpen(false)}
+              onClick={() => {
+                setAddPersonModalOpen(false);
+                setEmailFocus(true);
+                setAgeFocus(true);
+                setEmailError("");
+                setAgeError("");
+                setFile("");
+              }}
             >
               Cancel
             </button>
             <button
-              disabled={perc !== null && perc < 100}
+              disabled={disabled || (perc !== null && perc < 100)}
               style={{ backgroundColor: "#69EBFC" }}
               className="button has-text-white"
               onClick={handleAdd}

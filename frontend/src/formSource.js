@@ -1,6 +1,6 @@
 export const userInputs = [
   {
-    id: "fullName",
+    id: "fullname",
     type: "text",
     placeholder: "Full Name",
   },
@@ -11,19 +11,8 @@ export const userInputs = [
     placeholder: "E-mail",
   },
   {
-    id: "phone",
-    type: "text",
-    placeholder: "Phone Number",
-  },
-
-  {
-    id: "address",
-    type: "text",
-    placeholder: "Address",
-  },
-  {
-    id: "country",
-    type: "text",
-    placeholder: "Country",
+    id: "age",
+    type: "number",
+    placeholder: "Age",
   },
 ];

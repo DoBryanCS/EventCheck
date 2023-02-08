@@ -32,11 +32,28 @@ export default function SigninModal(props) {
         const user = userCredential.user;
         console.log(user);
         dispatch({ type: "LOGIN", payload: user });
+        sendUserIdToBackend(user.uid);
         navigate("/home");
         setSigninModalOpen(false);
       })
       .catch((error) => {
         setError(true);
+      });
+  };
+
+  const sendUserIdToBackend = (userId) => {
+    fetch("http://127.0.0.1:5000/get_user_data", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: userId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
       });
   };
 

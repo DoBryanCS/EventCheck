@@ -34,12 +34,29 @@ export default function SignupModal(props) {
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
       dispatch({ type: "LOGIN", payload: res.user });
+      sendUserIdToBackend(res.user.uid);
       navigate("/home");
       setSignupModalOpen(false);
       await setDoc(doc(db, "companies", res.user.uid), {});
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const sendUserIdToBackend = (userId) => {
+    fetch("http://127.0.0.1:5000/get_user_data", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: userId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   useEffect(() => {
