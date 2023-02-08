@@ -90,6 +90,7 @@ export default function AddPersonModal(props) {
         ...data,
         timeStamp: serverTimestamp(),
       });
+      sendUserIdToBackend(currentUser.uid);
       setAddPersonModalOpen(false);
       setEmailFocus(true);
       setAgeFocus(true);
@@ -99,6 +100,22 @@ export default function AddPersonModal(props) {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const sendUserIdToBackend = (userId) => {
+    fetch("http://127.0.0.1:5000/get_user_data", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: userId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   const handleInput = (e) => {

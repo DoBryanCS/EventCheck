@@ -38,9 +38,27 @@ const PeopleDatabase = () => {
       console.log(id);
       await deleteDoc(doc(db, "companies", currentUser.uid, "people", id));
       setData(data.filter((item) => item.id !== id));
+      sendUserIdAndPngIdToBackend(currentUser.uid, id);
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const sendUserIdAndPngIdToBackend = (userId, pngId) => {
+    fetch("http://127.0.0.1:5000/delete_png", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: userId,
+        pngId: pngId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   const actionColumn = [
