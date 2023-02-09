@@ -82,12 +82,12 @@ const PeopleDatabase = () => {
               style={{
                 padding: "2px 5px",
                 borderRadius: "5px",
-                color: "darkblue",
-                border: "1px dotted rgba(0,0,139,0.596)",
+                color: "#333399",
+                border: "1px solid #333399",
                 cursor: "pointer",
               }}
             >
-              View
+              Update
             </div>
             <div
               className="deleteButton"
@@ -95,10 +95,13 @@ const PeopleDatabase = () => {
                 padding: "2px 5px",
                 borderRadius: "5px",
                 color: "crimson",
-                border: "1px dotted rgba(220,20,60,0.6)",
+                border: "1px solid rgba(220,20,60,0.6)",
                 cursor: "pointer",
               }}
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => {
+                handleDelete(params.row.id);
+                console.log(params.row.id);
+              }}
             >
               Delete
             </div>
@@ -145,7 +148,6 @@ const PeopleDatabase = () => {
         columns={userColumns.concat(actionColumn)}
         pageSize={5}
         rowsPerPageOptions={[5]}
-        checkboxSelection
       />
     </div>
   );
