@@ -2,7 +2,7 @@
 EVENT CHECK
 Fait par Do Khoa / Hangi Kisoni Eusèbe
 
-Vision Globale du projet : <br/>
+VISION GLOBALE DU PROJET: <br/>
 Nous visons à créer une application web qui facilite la gestion des listes d'invités pour les entreprises, les écoles et d'autres organisations en permettant de stocker les images et les enregistrements vocaux des personnes autorisées à un événement dans une base de données.
 Lorsque le jour de l'événement arrive, l'entreprise peut utiliser notre application pour scanner les personnes à l'entrée et vérifier instantanément leur identité en comparant leur image et leur enregistrement vocal avec les données stockées dans notre base de données. Cela permet de déterminer rapidement qui est autorisé à participer à l'événement et qui n'est pas.
 Notre application offrira également des fonctionnalités de gestion d’événements et des listes d'invités, telles que l'ajout, la suppression et la modification de ces derniers.
