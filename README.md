@@ -1,5 +1,5 @@
 # eventcheck
-EVENTCHECK
+EVENT CHECK
 Fait par Do Khoa / Hangi Kisoni Eusèbe
 
 Vision Globale du projet : <br/>
@@ -11,16 +11,17 @@ Notre application offrira également des fonctionnalités de gestion d’événe
 
 INSTALLATION BACKEND: <br/>
 1-Activer l'environnement virtuel: ./venv/Scripts/activate <br/>
-2-Installer les librairies: pip install face_recognition opencv-python flask flask-cors <br/>
+2-Installer les librairies: pip install face_recognition opencv-python flask flask-cors firebase-admin <br/>
 3-Runner le backend: python main.py <br/>
 
 INSTALLATION FRONTEND: <br/>
-1-Installer les dépendances: npm install
-2-Runner le frontend: npm start
+1-Installer les dépendances: npm install <br/>
+2-Runner le frontend: npm start  <br/>
 
 ---------------------------------------------------------------------------------------------------------------------------------
 
 CE QU'ON A UTILISÉ: <br/>
+-SDK firebase-admin
 -API face_recognition <br/>
 -OpenCv <br/>
 -Framework Flask <br/>
