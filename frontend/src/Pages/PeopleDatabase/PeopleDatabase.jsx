@@ -129,6 +129,18 @@ const PeopleDatabase = () => {
   ];
   return (
     <div className="datatable" style={{ height: "63.3vh", padding: "20px" }}>
+       <div
+        className="datatableTitle title is-4"
+        style={{
+          width: "100%",
+          marginBottom: "10px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        People Database
+      </div>
       <div
         className="datatableTitle"
         style={{

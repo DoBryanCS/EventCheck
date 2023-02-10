@@ -24,12 +24,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <div
-        style={{
-          backgroundColor: "#69EBFC",
-          height: "100vh",
-          width: "100vw",
-          position: "fixed",
-        }}
+        className="background"
+        
       >
         <div
           className="landingBox"

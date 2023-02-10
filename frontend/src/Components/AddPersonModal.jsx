@@ -182,9 +182,7 @@ export default function AddPersonModal(props) {
                   borderRadius: "50%",
                   objectFit: "cover",
                   cursor: "pointer",
-                  boxShadow: file
-                    ? "1px 1px 10px #69EBFC"
-                    : "1px 1px 10px #cc0000",
+                  boxShadow: "1px 1px 10px #69EBFC",
                 }}
                 src={
                   file
@@ -203,11 +201,6 @@ export default function AddPersonModal(props) {
                 onChange={(e) => setFile(e.target.files[0])}
               />
             </div>
-            {!file && (
-              <div className="error mb-2 has-text-weight-bold">
-                Select an image
-              </div>
-            )}
 
             {inputs.map((input) => (
               <div key={input.id} className="field">
@@ -217,7 +210,8 @@ export default function AddPersonModal(props) {
                   style={{
                     boxShadow:
                       (input.id === "email" && !emailFocus) ||
-                      (input.id === "age" && !ageFocus)
+                      (input.id === "age" && !ageFocus) ||
+                      (input.id === "fullname" && !nameFocus)
                         ? "1px 1px 10px #cc0000"
                         : "1px 1px 10px #69EBFC",
                   }}

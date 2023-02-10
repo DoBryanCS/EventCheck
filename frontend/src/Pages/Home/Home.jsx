@@ -38,7 +38,7 @@ function Home() {
                     />
                   </div>
                   <div className="section">
-                    <p>Verification Camera</p>
+                    <p>Real Time Verification</p>
                   </div>
                 </div>
               </div>

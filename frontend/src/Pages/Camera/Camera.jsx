@@ -6,7 +6,7 @@ const Camera = () => {
 
   return (
     <div className="container">
-      <h1>Verification</h1>
+      <div className=" title is-4">Verification</div>
       <div className="video-container">
         <img src={videoUrl} alt="Video" width="100%" />
 
