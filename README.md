@@ -21,7 +21,7 @@ INSTALLATION FRONTEND: <br/>
 ---------------------------------------------------------------------------------------------------------------------------------
 
 CE QU'ON A UTILISÉ: <br/>
--SDK firebase-admin
+-SDK firebase-admin <br/>
 -API face_recognition <br/>
 -OpenCv <br/>
 -Framework Flask <br/>
