@@ -1,6 +1,7 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { userColumns } from "../../datatablesource";
 import AddPersonModal from "../../Components/AddPersonModal";
+import UpdatePersonModal from "../../Components/UpdatePersonModal";
 import React, { useEffect, useState } from "react";
 import { userInputs } from "../../formSource";
 import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
@@ -11,6 +12,9 @@ import { AuthContext } from "../../Context/AuthContext";
 const PeopleDatabase = () => {
   const [data, setData] = useState([]);
   const [addPersonModalOpen, setAddPersonModalOpen] = useState(false);
+  const [updatePersonModalOpen, setUpdatePersonModalOpen] = useState(false);
+  const [personDataToUpdate, setPersonDataToUpdate] = useState({});
+
   const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
@@ -61,6 +65,15 @@ const PeopleDatabase = () => {
       });
   };
 
+  const handleSetUpdatedPersonData = (personData) => {
+    data.forEach((item) => {
+      if (item.id === personData) {
+        setPersonDataToUpdate(item);
+        return;
+      }
+    });
+  };
+
   const actionColumn = [
     {
       field: "action",
@@ -85,6 +98,10 @@ const PeopleDatabase = () => {
                 color: "#333399",
                 border: "1px solid #333399",
                 cursor: "pointer",
+              }}
+              onClick={() => {
+                setUpdatePersonModalOpen(true);
+                handleSetUpdatedPersonData(params.row.id);
               }}
             >
               Update
@@ -140,6 +157,13 @@ const PeopleDatabase = () => {
         <AddPersonModal
           addPersonModalOpen={addPersonModalOpen}
           setAddPersonModalOpen={setAddPersonModalOpen}
+          inputs={userInputs}
+        />
+        <UpdatePersonModal
+          personDataToUpdate={personDataToUpdate}
+          setPersonDataToUpdate={setPersonDataToUpdate}
+          updatePersonModalOpen={updatePersonModalOpen}
+          setUpdatePersonModalOpen={setUpdatePersonModalOpen}
           inputs={userInputs}
         />
       </div>

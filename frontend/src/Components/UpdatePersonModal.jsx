@@ -1,16 +1,24 @@
 import React, { useState, useRef, useEffect } from "react";
-import { setDoc, doc, collection, serverTimestamp } from "firebase/firestore";
+import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { db, storage } from "../firebase-config";
 import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
-export default function AddPersonModal(props) {
-  const [data, setData] = useState({});
-  const [file, setFile] = useState("");
-  const [perc, setPerc] = useState(null);
-  const fileInputRef = useRef(null);
+export default function UpdatePersonModal(props) {
+  const {
+    personDataToUpdate,
+    setPersonDataToUpdate,
+    updatePersonModalOpen,
+    setUpdatePersonModalOpen,
+    inputs,
+  } = props;
+
   const { currentUser } = useContext(AuthContext);
+
+  const [file, setFile] = useState("");
+  const fileInputRef = useRef(null);
+  const [perc, setPerc] = useState(null);
 
   const [nameFocus, setNameFocus] = useState(true);
   const [emailFocus, setEmailFocus] = useState(true);
@@ -22,31 +30,27 @@ export default function AddPersonModal(props) {
 
   const [disabled, setDisabled] = useState(true);
 
-  const { addPersonModalOpen, setAddPersonModalOpen, inputs } = props;
-
   useEffect(() => {
     if (
-      Object.keys(data).length >= 4 &&
+      Object.keys(personDataToUpdate).length >= 4 &&
       nameFocus &&
       emailFocus &&
       ageFocus &&
-      file !== ""
+      personDataToUpdate.img !== ""
     ) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-  }, [data, nameFocus, emailFocus, ageFocus, file]);
+  }, [personDataToUpdate, nameFocus, emailFocus, ageFocus, file]);
+
+  console.log(personDataToUpdate);
 
   useEffect(() => {
     const uploadFile = () => {
       const storageRef = ref(storage, file.name);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
-      // Register three observers:
-      // 1. 'state_changed' observer, called any time the state changes
-      // 2. Error observer, called on failure
-      // 3. Completion observer, called on successful completion
       uploadTask.on(
         "state_changed",
         (snapshot) => {
@@ -75,7 +79,7 @@ export default function AddPersonModal(props) {
           // Handle successful uploads on complete
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setData((prev) => ({ ...prev, img: downloadURL }));
+            setPersonDataToUpdate((prev) => ({ ...prev, img: downloadURL }));
           });
         }
       );
@@ -83,50 +87,13 @@ export default function AddPersonModal(props) {
     file && uploadFile();
   }, [file]);
 
-  const handleAdd = async (e) => {
-    e.preventDefault();
-    try {
-      const docRef = doc(
-        collection(db, "companies", currentUser.uid, "people")
-      );
-      await setDoc(docRef, {
-        ...data,
-        timeStamp: serverTimestamp(),
-      });
-      sendUserIdToBackend(currentUser.uid);
-      setAddPersonModalOpen(false);
-      setNameFocus(true);
-      setEmailFocus(true);
-      setAgeFocus(true);
-      setNameError("");
-      setEmailError("");
-      setAgeError("");
-      setFile("");
-      setData({});
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const sendUserIdToBackend = (userId) => {
-    fetch("http://127.0.0.1:5000/get_user_data", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: userId,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      });
-  };
-
-  const handleInput = (e) => {
-    const id = e.target.id;
-    const value = e.target.value;
+  const handleInputChange = (event) => {
+    setPersonDataToUpdate({
+      ...personDataToUpdate,
+      [event.target.id]: event.target.value,
+    });
+    const id = event.target.id;
+    const value = event.target.value;
 
     if (id === "fullname") {
       if (value === "") {
@@ -149,7 +116,7 @@ export default function AddPersonModal(props) {
     }
 
     if (id === "age") {
-      if (value > 0 && value > 200) {
+      if (value < 0 || value > 200 || value === "") {
         setAgeFocus(false);
         setAgeError("The age must be between 0 and 200 inclusive");
       } else {
@@ -157,12 +124,55 @@ export default function AddPersonModal(props) {
         setAgeError("");
       }
     }
+  };
 
-    setData({ ...data, [id]: value });
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      const docRef = doc(
+        db,
+        "companies",
+        currentUser.uid,
+        "people",
+        personDataToUpdate.id
+      );
+
+      await updateDoc(docRef, {
+        ...personDataToUpdate,
+        timeStamp: serverTimestamp(),
+      });
+      sendUserIdToBackend(currentUser.uid);
+      setUpdatePersonModalOpen(false);
+      setNameFocus(true);
+      setEmailFocus(true);
+      setAgeFocus(true);
+      setNameError("");
+      setEmailError("");
+      setAgeError("");
+      setFile("");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const sendUserIdToBackend = (userId) => {
+    fetch("http://127.0.0.1:5000/get_user_data", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: userId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   return (
-    addPersonModalOpen && (
+    updatePersonModalOpen && (
       <div className="modal is-active">
         <div className="modal-background"></div>
         <div className="modal-card">
@@ -171,7 +181,7 @@ export default function AddPersonModal(props) {
               className="modal-card-title has-text-centered has-text-weight-bold"
               style={{ marginBottom: "0" }}
             >
-              Add a new person
+              Update Person
             </p>
           </header>
           <section className="modal-card-body has-text-centered">
@@ -182,13 +192,13 @@ export default function AddPersonModal(props) {
                   borderRadius: "50%",
                   objectFit: "cover",
                   cursor: "pointer",
-                  boxShadow: file
+                  boxShadow: personDataToUpdate.img
                     ? "1px 1px 10px #69EBFC"
                     : "1px 1px 10px #cc0000",
                 }}
                 src={
-                  file
-                    ? URL.createObjectURL(file)
+                  personDataToUpdate.img
+                    ? personDataToUpdate.img
                     : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
                 }
                 alt="your-image"
@@ -203,12 +213,11 @@ export default function AddPersonModal(props) {
                 onChange={(e) => setFile(e.target.files[0])}
               />
             </div>
-            {!file && (
+            {!personDataToUpdate.img && (
               <div className="error mb-2 has-text-weight-bold">
                 Select an image
               </div>
             )}
-
             {inputs.map((input) => (
               <div key={input.id} className="field">
                 <div
@@ -217,7 +226,8 @@ export default function AddPersonModal(props) {
                   style={{
                     boxShadow:
                       (input.id === "email" && !emailFocus) ||
-                      (input.id === "age" && !ageFocus)
+                      (input.id === "age" && !ageFocus) ||
+                      (input.id === "fullname" && !nameFocus)
                         ? "1px 1px 10px #cc0000"
                         : "1px 1px 10px #69EBFC",
                   }}
@@ -227,7 +237,8 @@ export default function AddPersonModal(props) {
                     className="input"
                     type={input.type}
                     placeholder={input.placeholder}
-                    onChange={handleInput}
+                    value={personDataToUpdate[input.id]}
+                    onChange={handleInputChange}
                   />
                 </div>
                 {input.id === "fullname" && nameError && (
@@ -252,15 +263,12 @@ export default function AddPersonModal(props) {
             <button
               className="button has-text-weight-bold"
               onClick={() => {
-                setAddPersonModalOpen(false);
-                setNameFocus(true);
+                setUpdatePersonModalOpen(false);
                 setEmailFocus(true);
                 setAgeFocus(true);
-                setNameError("");
                 setEmailError("");
                 setAgeError("");
                 setFile("");
-                setData({});
               }}
             >
               Cancel
@@ -269,9 +277,9 @@ export default function AddPersonModal(props) {
               disabled={disabled || (perc !== null && perc < 100)}
               style={{ backgroundColor: "#69EBFC" }}
               className="button has-text-white"
-              onClick={handleAdd}
+              onClick={handleUpdate}
             >
-              Send
+              Update
             </button>
           </footer>
         </div>

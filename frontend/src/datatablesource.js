@@ -23,6 +23,7 @@ export const userColumns = [
             alt="avatar"
           />
           {params.row.fullname}
+         
         </div>
       );
     },
