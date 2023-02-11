@@ -50,7 +50,7 @@ const PeopleDatabase = () => {
 
   const sendUserIdAndPngIdToBackend = (userId, pngId) => {
     fetch("http://127.0.0.1:5000/delete_png", {
-      method: "POST",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },

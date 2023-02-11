@@ -1,8 +1,11 @@
 import React from "react";
 import "./Camera.css";
+import { useContext } from "react";
+import { AuthContext } from "../../Context/AuthContext";
 
 const Camera = () => {
-  const videoUrl = "http://127.0.0.1:5000/video";
+  const { currentUser } = useContext(AuthContext);
+  const videoUrl = `http://127.0.0.1:5000/video/${currentUser.uid}`;
 
   return (
     <div className="container">
