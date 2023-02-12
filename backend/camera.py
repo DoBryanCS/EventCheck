@@ -21,13 +21,19 @@ def get_frame(user_id):
     # Use the face_recognition.face_encodings method to get the face encoding for each person in the image. 
     # The face encoding is then added to the known_face_encodings list. The person's "fullname" is also added to the known_face_names list.
     for doc in docs:
+       
         fullname = doc.to_dict()["fullname"]
         eli_image = face_recognition.load_image_file(f"images/{user_id}/{doc.id}.png")
-        eli_face_encoding = face_recognition.face_encodings(eli_image)[0]
-        known_face_encodings.append(eli_face_encoding)
-        known_face_names.append(fullname)
+        eli_face_encoding = face_recognition.face_encodings(eli_image)
+        if eli_face_encoding:
+            eli_face_encoding = eli_face_encoding[0]
+            known_face_encodings.append(eli_face_encoding)
+            known_face_names.append(fullname)
 
-
+    face_locations = []
+    face_encodings = []
+    face_names = []
+       
     # Start a video capture using the cv2.VideoCapture method, which captures video from the default camera (camera index 0).
     video_capture = cv2.VideoCapture(0)
     print(video_capture.isOpened())

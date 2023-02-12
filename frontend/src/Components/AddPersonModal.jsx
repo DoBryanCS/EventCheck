@@ -22,6 +22,8 @@ export default function AddPersonModal(props) {
 
   const [disabled, setDisabled] = useState(true);
 
+  const [dataPrinted, setDataPrinted] = useState(true);
+
   const { addPersonModalOpen, setAddPersonModalOpen, inputs } = props;
 
   useEffect(() => {
@@ -83,6 +85,18 @@ export default function AddPersonModal(props) {
     file && uploadFile();
   }, [file]);
 
+  useEffect(() => {
+    const preventClicks = (event) => {
+      if (!dataPrinted) {
+        event.preventDefault();
+      }
+    };
+    document.addEventListener("click", preventClicks);
+    return () => {
+      document.removeEventListener("click", preventClicks);
+    };
+  }, [dataPrinted]);
+
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
@@ -109,6 +123,7 @@ export default function AddPersonModal(props) {
   };
 
   const sendUserIdToBackend = (userId) => {
+    setDataPrinted(false);
     fetch("http://127.0.0.1:5000/get_user_data", {
       method: "POST",
       headers: {
@@ -121,6 +136,7 @@ export default function AddPersonModal(props) {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        setDataPrinted(true);
       });
   };
 

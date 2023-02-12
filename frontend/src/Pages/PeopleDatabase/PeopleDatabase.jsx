@@ -15,6 +15,8 @@ const PeopleDatabase = () => {
   const [updatePersonModalOpen, setUpdatePersonModalOpen] = useState(false);
   const [personDataToUpdate, setPersonDataToUpdate] = useState({});
 
+  const [dataPrinted, setDataPrinted] = useState(true);
+
   const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
@@ -48,7 +50,20 @@ const PeopleDatabase = () => {
     }
   };
 
+  useEffect(() => {
+    const preventClicks = (event) => {
+      if (!dataPrinted) {
+        event.preventDefault();
+      }
+    };
+    document.addEventListener("click", preventClicks);
+    return () => {
+      document.removeEventListener("click", preventClicks);
+    };
+  }, [dataPrinted]);
+
   const sendUserIdAndPngIdToBackend = (userId, pngId) => {
+    setDataPrinted(false);
     fetch("http://127.0.0.1:5000/delete_png", {
       method: "DELETE",
       headers: {
@@ -62,6 +77,7 @@ const PeopleDatabase = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        setDataPrinted(true);
       });
   };
 

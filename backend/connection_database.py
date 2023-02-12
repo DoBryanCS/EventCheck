@@ -38,3 +38,4 @@ def delete_png(user_id, png_id):
     folder_path = f"images/{user_id}/{png_id}.png"
     if os.path.exists(folder_path):
         os.remove(folder_path)
+        
