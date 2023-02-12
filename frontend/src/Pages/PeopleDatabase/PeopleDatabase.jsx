@@ -8,6 +8,7 @@ import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { useContext } from "react";
 import { AuthContext } from "../../Context/AuthContext";
+import LoadingOverlay from "../../Components/LoadingOverlay/LoadingOverlay";
 
 const PeopleDatabase = () => {
   const [data, setData] = useState([]);
@@ -15,7 +16,7 @@ const PeopleDatabase = () => {
   const [updatePersonModalOpen, setUpdatePersonModalOpen] = useState(false);
   const [personDataToUpdate, setPersonDataToUpdate] = useState({});
 
-  const [dataPrinted, setDataPrinted] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const { currentUser } = useContext(AuthContext);
 
@@ -52,7 +53,7 @@ const PeopleDatabase = () => {
 
   useEffect(() => {
     const preventClicks = (event) => {
-      if (!dataPrinted) {
+      if (loading) {
         event.preventDefault();
       }
     };
@@ -60,10 +61,10 @@ const PeopleDatabase = () => {
     return () => {
       document.removeEventListener("click", preventClicks);
     };
-  }, [dataPrinted]);
+  }, [loading]);
 
   const sendUserIdAndPngIdToBackend = (userId, pngId) => {
-    setDataPrinted(false);
+    setLoading(true);
     fetch("http://127.0.0.1:5000/delete_png", {
       method: "DELETE",
       headers: {
@@ -77,7 +78,12 @@ const PeopleDatabase = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setDataPrinted(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -145,7 +151,8 @@ const PeopleDatabase = () => {
   ];
   return (
     <div className="datatable" style={{ height: "63.3vh", padding: "20px" }}>
-       <div
+      <LoadingOverlay loading={loading} />
+      <div
         className="datatableTitle title is-4"
         style={{
           width: "100%",

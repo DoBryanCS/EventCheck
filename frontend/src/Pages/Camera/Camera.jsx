@@ -11,9 +11,10 @@ const Camera = () => {
     <div className="container">
       <div className=" title is-4">Verification</div>
       <div className="video-container">
+        <div className="overlayy">
+          <div className="spinnerr"></div>
+        </div>
         <img src={videoUrl} alt="Video" width="100%" />
-
-        <p className="loading-text">Loading...</p>
       </div>
     </div>
   );

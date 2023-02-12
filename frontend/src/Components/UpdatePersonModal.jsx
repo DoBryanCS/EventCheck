@@ -4,6 +4,7 @@ import { db, storage } from "../firebase-config";
 import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import LoadingOverlay from "./LoadingOverlay/LoadingOverlay";
 
 export default function UpdatePersonModal(props) {
   const {
@@ -30,6 +31,8 @@ export default function UpdatePersonModal(props) {
 
   const [disabled, setDisabled] = useState(true);
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (
       Object.keys(personDataToUpdate).length >= 4 &&
@@ -43,8 +46,6 @@ export default function UpdatePersonModal(props) {
       setDisabled(true);
     }
   }, [personDataToUpdate, nameFocus, emailFocus, ageFocus, file]);
-
-  console.log(personDataToUpdate);
 
   useEffect(() => {
     const uploadFile = () => {
@@ -126,6 +127,18 @@ export default function UpdatePersonModal(props) {
     }
   };
 
+  useEffect(() => {
+    const preventClicks = (event) => {
+      if (loading) {
+        event.preventDefault();
+      }
+    };
+    document.addEventListener("click", preventClicks);
+    return () => {
+      document.removeEventListener("click", preventClicks);
+    };
+  }, [loading]);
+
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
@@ -142,20 +155,13 @@ export default function UpdatePersonModal(props) {
         timeStamp: serverTimestamp(),
       });
       sendUserIdToBackend(currentUser.uid);
-      setUpdatePersonModalOpen(false);
-      setNameFocus(true);
-      setEmailFocus(true);
-      setAgeFocus(true);
-      setNameError("");
-      setEmailError("");
-      setAgeError("");
-      setFile("");
     } catch (err) {
       console.log(err);
     }
   };
 
   const sendUserIdToBackend = (userId) => {
+    setLoading(true);
     fetch("http://127.0.0.1:5000/get_user_data", {
       method: "POST",
       headers: {
@@ -168,6 +174,20 @@ export default function UpdatePersonModal(props) {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+        setUpdatePersonModalOpen(false);
+        setNameFocus(true);
+        setEmailFocus(true);
+        setAgeFocus(true);
+        setNameError("");
+        setEmailError("");
+        setAgeError("");
+        setFile("");
       });
   };
 
@@ -176,6 +196,7 @@ export default function UpdatePersonModal(props) {
       <div className="modal is-active">
         <div className="modal-background"></div>
         <div className="modal-card">
+          <LoadingOverlay loading={loading} />
           <header className="modal-card-head">
             <p
               className="modal-card-title has-text-centered has-text-weight-bold"

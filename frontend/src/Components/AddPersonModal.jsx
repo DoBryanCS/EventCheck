@@ -4,6 +4,7 @@ import { db, storage } from "../firebase-config";
 import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import LoadingOverlay from "./LoadingOverlay/LoadingOverlay";
 
 export default function AddPersonModal(props) {
   const [data, setData] = useState({});
@@ -22,7 +23,7 @@ export default function AddPersonModal(props) {
 
   const [disabled, setDisabled] = useState(true);
 
-  const [dataPrinted, setDataPrinted] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const { addPersonModalOpen, setAddPersonModalOpen, inputs } = props;
 
@@ -87,7 +88,7 @@ export default function AddPersonModal(props) {
 
   useEffect(() => {
     const preventClicks = (event) => {
-      if (!dataPrinted) {
+      if (loading) {
         event.preventDefault();
       }
     };
@@ -95,7 +96,7 @@ export default function AddPersonModal(props) {
     return () => {
       document.removeEventListener("click", preventClicks);
     };
-  }, [dataPrinted]);
+  }, [loading]);
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -108,22 +109,13 @@ export default function AddPersonModal(props) {
         timeStamp: serverTimestamp(),
       });
       sendUserIdToBackend(currentUser.uid);
-      setAddPersonModalOpen(false);
-      setNameFocus(true);
-      setEmailFocus(true);
-      setAgeFocus(true);
-      setNameError("");
-      setEmailError("");
-      setAgeError("");
-      setFile("");
-      setData({});
     } catch (err) {
       console.log(err);
     }
   };
 
   const sendUserIdToBackend = (userId) => {
-    setDataPrinted(false);
+    setLoading(true);
     fetch("http://127.0.0.1:5000/get_user_data", {
       method: "POST",
       headers: {
@@ -136,7 +128,21 @@ export default function AddPersonModal(props) {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setDataPrinted(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+        setAddPersonModalOpen(false);
+        setNameFocus(true);
+        setEmailFocus(true);
+        setAgeFocus(true);
+        setNameError("");
+        setEmailError("");
+        setAgeError("");
+        setFile("");
+        setData({});
       });
   };
 
@@ -179,113 +185,116 @@ export default function AddPersonModal(props) {
 
   return (
     addPersonModalOpen && (
-      <div className="modal is-active">
-        <div className="modal-background"></div>
-        <div className="modal-card">
-          <header className="modal-card-head">
-            <p
-              className="modal-card-title has-text-centered has-text-weight-bold"
-              style={{ marginBottom: "0" }}
-            >
-              Add a new person
-            </p>
-          </header>
-          <section className="modal-card-body has-text-centered">
-            <div className="field">
-              <img
-                style={{
-                  width: "20%",
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  cursor: "pointer",
-                  boxShadow: "1px 1px 10px #69EBFC",
-                }}
-                src={
-                  file
-                    ? URL.createObjectURL(file)
-                    : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
-                }
-                alt="your-image"
-                onClick={() => fileInputRef.current.click()}
-              />
-              <input
-                type="file"
-                accept="image/*"
-                multiple={false}
-                style={{ display: "none" }}
-                ref={fileInputRef}
-                onChange={(e) => setFile(e.target.files[0])}
-              />
-            </div>
-
-            {inputs.map((input) => (
-              <div key={input.id} className="field">
-                <div
-                  key={input.id}
-                  className="field"
+      <>
+        <div className="modal is-active">
+          <div className="modal-background"></div>
+          <div className="modal-card">
+            <LoadingOverlay loading={loading} />
+            <header className="modal-card-head">
+              <p
+                className="modal-card-title has-text-centered has-text-weight-bold"
+                style={{ marginBottom: "0" }}
+              >
+                Add a new person
+              </p>
+            </header>
+            <section className="modal-card-body has-text-centered">
+              <div className="field">
+                <img
                   style={{
-                    boxShadow:
-                      (input.id === "email" && !emailFocus) ||
-                      (input.id === "age" && !ageFocus) ||
-                      (input.id === "fullname" && !nameFocus)
-                        ? "1px 1px 10px #cc0000"
-                        : "1px 1px 10px #69EBFC",
+                    width: "20%",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    cursor: "pointer",
+                    boxShadow: "1px 1px 10px #69EBFC",
                   }}
-                >
-                  <input
-                    id={input.id}
-                    className="input"
-                    type={input.type}
-                    placeholder={input.placeholder}
-                    onChange={handleInput}
-                  />
-                </div>
-                {input.id === "fullname" && nameError && (
-                  <div className="error mb-2 has-text-weight-bold">
-                    {nameError}
-                  </div>
-                )}
-                {input.id === "email" && emailError && (
-                  <div className="error mb-2 has-text-weight-bold">
-                    {emailError}
-                  </div>
-                )}
-                {input.id === "age" && ageError && (
-                  <div className="error mb-2 has-text-weight-bold">
-                    {ageError}
-                  </div>
-                )}
+                  src={
+                    file
+                      ? URL.createObjectURL(file)
+                      : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
+                  }
+                  alt="your-image"
+                  onClick={() => fileInputRef.current.click()}
+                />
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple={false}
+                  style={{ display: "none" }}
+                  ref={fileInputRef}
+                  onChange={(e) => setFile(e.target.files[0])}
+                />
               </div>
-            ))}
-          </section>
-          <footer className="modal-card-foot buttons is-centered">
-            <button
-              className="button has-text-weight-bold"
-              onClick={() => {
-                setAddPersonModalOpen(false);
-                setNameFocus(true);
-                setEmailFocus(true);
-                setAgeFocus(true);
-                setNameError("");
-                setEmailError("");
-                setAgeError("");
-                setFile("");
-                setData({});
-              }}
-            >
-              Cancel
-            </button>
-            <button
-              disabled={disabled || (perc !== null && perc < 100)}
-              style={{ backgroundColor: "#69EBFC" }}
-              className="button has-text-white"
-              onClick={handleAdd}
-            >
-              Send
-            </button>
-          </footer>
+
+              {inputs.map((input) => (
+                <div key={input.id} className="field">
+                  <div
+                    key={input.id}
+                    className="field"
+                    style={{
+                      boxShadow:
+                        (input.id === "email" && !emailFocus) ||
+                        (input.id === "age" && !ageFocus) ||
+                        (input.id === "fullname" && !nameFocus)
+                          ? "1px 1px 10px #cc0000"
+                          : "1px 1px 10px #69EBFC",
+                    }}
+                  >
+                    <input
+                      id={input.id}
+                      className="input"
+                      type={input.type}
+                      placeholder={input.placeholder}
+                      onChange={handleInput}
+                    />
+                  </div>
+                  {input.id === "fullname" && nameError && (
+                    <div className="error mb-2 has-text-weight-bold">
+                      {nameError}
+                    </div>
+                  )}
+                  {input.id === "email" && emailError && (
+                    <div className="error mb-2 has-text-weight-bold">
+                      {emailError}
+                    </div>
+                  )}
+                  {input.id === "age" && ageError && (
+                    <div className="error mb-2 has-text-weight-bold">
+                      {ageError}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </section>
+            <footer className="modal-card-foot buttons is-centered">
+              <button
+                className="button has-text-weight-bold"
+                onClick={() => {
+                  setAddPersonModalOpen(false);
+                  setNameFocus(true);
+                  setEmailFocus(true);
+                  setAgeFocus(true);
+                  setNameError("");
+                  setEmailError("");
+                  setAgeError("");
+                  setFile("");
+                  setData({});
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                disabled={disabled || (perc !== null && perc < 100)}
+                style={{ backgroundColor: "#69EBFC" }}
+                className="button has-text-white"
+                onClick={handleAdd}
+              >
+                Send
+              </button>
+            </footer>
+          </div>
         </div>
-      </div>
+      </>
     )
   );
 }

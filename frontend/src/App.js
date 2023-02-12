@@ -6,7 +6,6 @@ import Camera from "./Pages/Camera/Camera";
 import LandingPage from "./Pages/LandingPage/LandingPage";
 import Services from "./Pages/Services/Services";
 import PeopleDatabase from "./Pages/PeopleDatabase/PeopleDatabase";
-import AddPerson from "./Pages/AddPerson/AddPerson";
 import Navbar from "./Components/Navbar";
 import { useContext } from "react";
 import { AuthContext } from "./Context/AuthContext";
@@ -66,14 +65,6 @@ export default function App() {
               element={
                 <RequireAuth>
                   <PeopleDatabase />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/addPerson"
-              element={
-                <RequireAuth>
-                  <AddPerson />
                 </RequireAuth>
               }
             />
