@@ -36,3 +36,30 @@
     transform: rotate(360deg);
   }
 }
+
+body {
+  font-family: 'Lato', sans-serif;
+}
+
+.background {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  background: linear-gradient(to right, #69EBFC 0%, #C5F5F9 50%, #69EBFC 100%);
+  background-size: 400% 400%;
+  animation: background-animation 20s ease-in-out infinite;
+}
+
+@keyframes background-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+

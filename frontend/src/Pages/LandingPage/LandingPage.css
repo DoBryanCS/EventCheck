@@ -1,0 +1,14 @@
+/* Hide scrollbar for Chrome, Safari and Opera */
+.landingBox::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.landingBox {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.colored-word {
+  color: #333399;
+}
