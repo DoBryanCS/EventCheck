@@ -9,6 +9,7 @@ import PeopleDatabase from "./Pages/PeopleDatabase/PeopleDatabase";
 import Navbar from "./Components/Navbar";
 import { useContext } from "react";
 import { AuthContext } from "./Context/AuthContext";
+import EvenementDatabase from "./Pages/Evenement/evenement";
 
 export default function App() {
   const { currentUser } = useContext(AuthContext);
@@ -50,6 +51,7 @@ export default function App() {
 
           <Routes>
             <Route path="/" element={<LandingPage />} />
+            <Route path="/evenement" element={<EvenementDatabase />} />
 
             <Route path="/services" element={<Services />} />
             <Route

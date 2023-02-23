@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import "./Services.css";
 import imageFace from "./face-recognition.png";
 import event from "./people.png";

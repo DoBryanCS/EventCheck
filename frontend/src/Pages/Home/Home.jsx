@@ -45,7 +45,7 @@ function Home() {
             </Link>
           </div>
           <div className="column is-one-third">
-            <Link to="/camera">
+            <Link to="/evenement">
               <div
                 style={{
                   boxShadow: "1px 1px 10px #888888",
