@@ -8,31 +8,36 @@ import { AuthContext } from "../Context/AuthContext";
 export default function SigninModal(props) {
   const navigate = useNavigate();
 
+  // Extract dispatch from the context provider
   const { dispatch } = useContext(AuthContext);
 
+  // Destructure props
   const { signinModalOpen, setSigninModalOpen, setSignupModalOpen } = props;
 
+  // Set up state for user input values and error
   const [error, setError] = useState(false);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Define a function to handle changes to the email input
   function handleEmailChange(e) {
     setEmail(e.target.value);
   }
 
+  // Define a function to handle changes to the password input
   function handlePasswordChange(e) {
     setPassword(e.target.value);
   }
 
+  // Define a function to login a user
   const login = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
+        // Dispatch a login action to the context provider with the user data
         dispatch({ type: "LOGIN", payload: user });
-
         navigate("/home");
         setSigninModalOpen(false);
       })

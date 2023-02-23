@@ -11,23 +11,31 @@ import { useContext } from "react";
 import { AuthContext } from "./Context/AuthContext";
 
 export default function App() {
+  // Access the currentUser value from the AuthContext
   const { currentUser } = useContext(AuthContext);
 
+  // Define a state variable to control the visibility of the sign-in modal
   const [signinModalOpen, setSigninModalOpen] = useState(false);
 
+  // Define a component that requires authentication to access
   const RequireAuth = ({ children }) => {
+    // If the user is authenticated, render the children
+    // Otherwise, redirect the user to the landing page
     return currentUser
       ? children
       : (setSigninModalOpen(true), (<Navigate to="/" />));
   };
+
+  // Render the application
   return (
     <BrowserRouter>
       <div
         className="background"
-        
+        // Add any additional styling to the background element
       >
         <div
           className="landingBox"
+          // Add any additional styling to the landingBox element
           style={{
             borderRadius: "10px",
             position: "fixed",
@@ -43,15 +51,19 @@ export default function App() {
             overflowX: "hidden",
           }}
         >
+          {/* Render the navbar component */}
           <Navbar
             signinModalOpen={signinModalOpen}
             setSigninModalOpen={setSigninModalOpen}
           />
 
+          {/* Render the page content using React Router */}
           <Routes>
             <Route path="/" element={<LandingPage />} />
 
             <Route path="/services" element={<Services />} />
+
+            {/* Render the Home component within the RequireAuth component */}
             <Route
               path="/home"
               element={
@@ -60,6 +72,8 @@ export default function App() {
                 </RequireAuth>
               }
             />
+
+            {/* Render the PeopleDatabase component within the RequireAuth component */}
             <Route
               path="/database"
               element={
@@ -68,6 +82,8 @@ export default function App() {
                 </RequireAuth>
               }
             />
+
+            {/* Render the Camera component within the RequireAuth component */}
             <Route
               path="/camera"
               element={

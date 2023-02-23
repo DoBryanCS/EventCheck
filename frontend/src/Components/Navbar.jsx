@@ -6,14 +6,19 @@ import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
 
 export default function Navbar(props) {
+  // get the current user object from the AuthContext
   const { currentUser } = useContext(AuthContext);
 
+  // get the dispatch function from the AuthContext
   const { dispatch } = useContext(AuthContext);
 
+  // get the navigate function from react-router-dom
   const navigate = useNavigate();
 
+  // state variable to keep track of whether the signup modal is open
   const [signupModalOpen, setSignupModalOpen] = useState(false);
 
+  // function to toggle the navbar menu on and off
   const toggleNavbar = () => {
     const navbar = document.querySelector(".navbar-burger");
     const target = document.getElementById(navbar.dataset.target);
@@ -21,9 +26,13 @@ export default function Navbar(props) {
     target.classList.toggle("is-active");
   };
 
+  // function to handle user logout
   const logout = () => {
+    // dispatch the LOGOUT action to the AuthContext reducer
     dispatch({ type: "LOGOUT" });
+    // navigate the user back to the home page
     navigate("/");
+    // close the signin modal, if it is open
     props.setSigninModalOpen(false);
   };
 
@@ -38,6 +47,7 @@ export default function Navbar(props) {
           LOGO
         </a>
 
+        {/* button to toggle the navbar menu */}
         <a
           role="button"
           className="navbar-burger burger mr-5 mt-3"
@@ -52,43 +62,51 @@ export default function Navbar(props) {
         </a>
       </div>
 
+      {/* navbar menu */}
       <div id="navbarBasicExample" className="navbar-menu">
         <div className="navbar-end mr-5 mt-3">
           {currentUser ? (
             <>
+              {/* links to home and services pages */}
               <a className="navbar-item" href="/home">
                 HOME
               </a>
               <a className="navbar-item" href="/services">
                 SERVICES
               </a>
+              {/* link to log out and call the logout function */}
               <a className="navbar-item" onClick={logout}>
                 LOGOUT
               </a>
             </>
           ) : (
+            // if user is not logged in
             <>
+              {/* link to services page */}
               <a className="navbar-item" href="/services">
                 SERVICES
               </a>
+              {/* button to open the signup modal */}
               <a
                 className="navbar-item"
                 onClick={() => setSignupModalOpen(true)}
               >
                 SIGN UP
               </a>
+              {/* signup modal component */}
               <SignupModal
                 signupModalOpen={signupModalOpen}
                 setSignupModalOpen={setSignupModalOpen}
                 setSigninModalOpen={props.setSigninModalOpen}
               />
-
+              {/* button to open the signin modal */}
               <a
                 className="navbar-item"
                 onClick={() => props.setSigninModalOpen(true)}
               >
                 SIGN IN
               </a>
+              {/* signin modal component */}
               <SigninModal
                 signinModalOpen={props.signinModalOpen}
                 setSigninModalOpen={props.setSigninModalOpen}
