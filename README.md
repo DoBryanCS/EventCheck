@@ -56,16 +56,14 @@ Voici les technologies et les outils utilisés pour le développement de ce proj
   </details>
   <details>
     <summary>Pages de connexion</summary>
-    <img src="https://github.com/DoBryanCS/EventCheck/assets/111463691/45baef64-fb71-4e73-98a0-e818eb6ae663" name="image-name>
-    <img src="https://github.com/DoBryanCS/EventCheck/assets/111463691/eaab23bb-b990-43ff-b832-e5766ba888a1" name="image-name>
+    <img src="https://github.com/DoBryanCS/EventCheck/assets/111463691/45baef64-fb71-4e73-98a0-e818eb6ae663" name="image-name">
+    <img src="https://github.com/DoBryanCS/EventCheck/assets/111463691/eaab23bb-b990-43ff-b832-e5766ba888a1" name="image-name">
   </details>
-  
   <details>
     <summary>Pages d'inscription</summary>
     <img src="https://github.com/DoBryanCS/EventCheck/assets/111463691/c4ea25f1-0bfa-4d3c-ae16-e124b74e5d96" name="image-name">
-    <img src="https://github.com/DoBryanCS/EventCheck/assets/111463691/2fd1c3de-8050-4929-8270-5d598b967321" name="image-name>
-  </details>
-        
+    <img src="https://github.com/DoBryanCS/EventCheck/assets/111463691/2fd1c3de-8050-4929-8270-5d598b967321" name="image-name">
+  </details>      
   <details>
     <summary>Pages d'ajout d'évènements</summary>
     <img src="https://github.com/DoBryanCS/EventCheck/assets/111463691/d3aa3f5b-a7b5-40d1-80ec-dfe5afae465c" name="image-name">
@@ -76,8 +74,16 @@ Voici les technologies et les outils utilisés pour le développement de ce proj
   </details>
   <details>
     <summary>Pages d'ajout de personnes</summary>
-    <img src="https://github.com/DoBryanCS/QuizChamps/assets/111463691/01e286c4-a2e8-4f6e-a839-3bbe213ca2d5" name="image-name">
-    <img src="https://github.com/DoBryanCS/QuizChamps/assets/111463691/01e286c4-a2e8-4f6e-a839-3bbe213ca2d5" name="image-name">
+    <img src="https://github.com/DoBryanCS/EventCheck/assets/111463691/d3aa3f5b-a7b5-40d1-80ec-dfe5afae465c" name="image-name">
+    <img src="https://github.com/DoBryanCS/EventCheck/assets/111463691/41784aba-461d-486c-aed9-377e6f2a1f0d" name="image-name">
+    <img src="https://github.com/DoBryanCS/EventCheck/assets/111463691/2bed885e-3da4-4cb4-b9d1-0ce0ba8d4b6d" name="image-name">
+    <img src="https://github.com/DoBryanCS/EventCheck/assets/111463691/bb53ff41-2a0e-45ae-a4db-eabcf6b562ab" name="image-name">
+    <img src="https://github.com/DoBryanCS/EventCheck/assets/111463691/69dddd21-81a4-4bf5-83cb-81c3640c775d" name="image-name">
+  </details>
+  <details>
+    <summary>Pages de vérification de personnes</summary>
+    <img src="https://github.com/DoBryanCS/EventCheck/assets/111463691/83d17cb4-93c7-450d-a23b-4c122d26e242" name="image-name">
+    <img src="https://github.com/DoBryanCS/EventCheck/assets/111463691/a6ed5204-9aae-4abc-9035-83f622e22081" name="image-name">
   </details>
 
   <p align="right">(<a href="#readme-top">Retour en haut</a>)</p>
