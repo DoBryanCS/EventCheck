@@ -94,7 +94,10 @@ Voici les technologies et les outils utilisés pour le développement de ce proj
   ## Guide d'installation et d'utilisation
 
   Le guide est aussi disponible dans le répertoire documentation
+  <br/>
   [EventCheck_Guide_Installation-Utilisation.pdf](https://github.com/DoBryanCS/EventCheck/files/12653724/EventCheck_Guide_Installation-Utilisation.pdf)
+
+  <p align="right">(<a href="#readme-top">Retour en haut</a>)</p>
 
   ## Contributeurs
 
