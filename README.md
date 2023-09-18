@@ -36,10 +36,9 @@ Bienvenue dans notre application web de gestion d'événements, l'outil parfait 
 Voici les technologies et les outils utilisés pour le développement de ce projet
 
 * [![React][React.js]][React-url]
-* [![Node][Node.js]][Node-url]
-* [![Express][Express.js]][Express-url]
-* [![Socket][Socket.io]][Socket-url]
-* [![Tailwind][Tailwind.css]][Tailwind-url]
+* [![Python][Python]][Python-url]
+* [![Flask][Flask]][Flask-url]
+* [![Bulma][Bulma.css]][Bulma-url]
 * [![Firebase][Firebase]][Firebase-url]
 * [![VSCode][VSCode]][VSCode-url]
 * [![Trello][Trello]][Trello-url]
@@ -93,7 +92,7 @@ Voici les technologies et les outils utilisés pour le développement de ce proj
 
   ## Guide d'installation et d'utilisation
 
-  Le guide est aussi disponible dans le répertoire documentation
+  Le guide est aussi disponible dans le répertoire documentation en format word
   <br/>
   [EventCheck_Guide_Installation-Utilisation.pdf](https://github.com/DoBryanCS/EventCheck/files/12653724/EventCheck_Guide_Installation-Utilisation.pdf)
 
@@ -110,14 +109,12 @@ Voici les technologies et les outils utilisés pour le développement de ce proj
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
-[Node.js]: https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white
-[Node-url]: https://nodejs.org/
-[Express.js]: https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white
-[Express-url]: https://expressjs.com/fr/
-[Socket.io]: https://img.shields.io/badge/Socket.io-010101?&style=for-the-badge&logo=Socket.io&logoColor=white
-[Socket-url]: https://socket.io/
-[Tailwind.css]: https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
-[Tailwind-url]: https://tailwindcss.com/
+[Python]: https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue
+[Python-url]: https://www.python.org/
+[Flask.css]: https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white
+[Flask-url]: https://flask.palletsprojects.com/
+[Bulma.css]: https://img.shields.io/badge/Bulma-00D1B2?style=for-the-badge&logo=Bulma&logoColor=white
+[Bulma-url]: https://bulma.io/
 [Trello]: https://img.shields.io/badge/Trello-0052CC?style=for-the-badge&logo=trello&logoColor=white
 [Trello-url]: https://trello.com/fr 
 [Firebase]: https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black
