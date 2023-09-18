@@ -17,6 +17,9 @@
       <a href="#Pages-de-lapplication">Pages de l'application</a>
     </li>
     <li>
+      <a href="#Guide-dinstallation-et-dutilisation">Guide d'installation et d'utilisation</a>
+    </li>
+    <li>
       <a href="#Contributeurs">Contributeurs</a>
     </li>
   </ol>
@@ -25,8 +28,6 @@
 ## À propos du projet
 
 Bienvenue dans notre application web de gestion d'événements, l'outil parfait pour les organisateurs d'événements qui souhaitent planifier une expérience exceptionnelle pour leurs invités. Que vous organisiez une conférence, une soirée scolaire ou une réunion d'affaires, notre application est conçue pour vous aider à gérer efficacement tous les aspects de votre événement. Avec notre application, vous pouvez facilement importer votre liste d'invités et les informations relatives à votre événement. Notre système intelligent de reconnaissance facial vous permettra d'identifier rapidement chaque invité, de suivre les confirmations de présence. Notre application vous permet également de personnaliser les invitations en fonction des préférences pour chaque invité. Vous pouvez facilement ajouter des détails sur les horaires, les lieux, les activités, etc. Avec notre application, vous pouvez également gérer les listes d'invités et suivre les présences pour chaque événement. Notre application est facile à utiliser, intuitive et fiable. Nous travaillons sans relâche pour améliorer constamment notre produit et nous sommes toujours prêts à offrir un excellent support client pour répondre à toutes vos questions et besoins. Alors n'hésitez plus, essayez notre application web de gestion d'événements dès maintenant et offrez à vos invités une expérience inoubliable!
-</br>
-Pour en savoir plus, clicker pour voir le guide d'utilisation et d'installation: [EventCheck_Guide_Installation-Utilisation.pdf](https://github.com/DoBryanCS/EventCheck/files/12653724/EventCheck_Guide_Installation-Utilisation.pdf)
 
 <p align="right">(<a href="#readme-top">Retour en haut</a>)</p>
 
@@ -89,6 +90,11 @@ Voici les technologies et les outils utilisés pour le développement de ce proj
   </details>
 
   <p align="right">(<a href="#readme-top">Retour en haut</a>)</p>
+
+  ## Guide d'installation et d'utilisation
+
+  Le guide est aussi disponible dans le répertoire documentation
+  [EventCheck_Guide_Installation-Utilisation.pdf](https://github.com/DoBryanCS/EventCheck/files/12653724/EventCheck_Guide_Installation-Utilisation.pdf)
 
   ## Contributeurs
 
